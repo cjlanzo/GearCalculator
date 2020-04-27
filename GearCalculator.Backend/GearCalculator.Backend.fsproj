@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Scripts\DbDown.sql" />
+    <None Include="Scripts\DbUp.sql" />
+    <Compile Include="Models.fs" />
+    <Compile Include="Presets.fs" />
+    <Compile Include="Utilities.fs" />
+    <Compile Include="Mappers.fs" />
+    <Compile Include="Database.fs" />
+    <Compile Include="SetBuilder.fs" />
+    <Compile Include="StatCalculator.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+  </ItemGroup>
+
+</Project>

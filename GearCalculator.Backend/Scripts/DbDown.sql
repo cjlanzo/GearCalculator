@@ -1,0 +1,8 @@
+﻿USE WoWClassicGear
+
+DROP TABLE UserSets
+DROP TABLE Users
+DROP TABLE ItemStats
+DROP TABLE Items
+DROP TABLE ArmorClasses
+DROP TABLE ItemSlots

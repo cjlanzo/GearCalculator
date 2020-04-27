@@ -1,0 +1,13 @@
+﻿*.suo
+*.user
+
+[Dd]debug/
+[Rr]elease/
+x64/
+x86/
+[Bb]uild/
+[Dd]eploy/
+[Bb]in/
+[Oo]bj/
+
+.vs/
