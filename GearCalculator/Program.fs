@@ -43,7 +43,7 @@ let main args =
     let sets = 
         items
         |> generateSets
-
+    
     Presets.scenarios
     |> List.map (fun scenario -> scenario.Name, calculateBestSets 2 scenario sets)
     |> List.collect (fun (name, sets) -> stringifyScenario name sets)
@@ -54,12 +54,12 @@ let main args =
 
 
 // TODO
-// Add in set bonuses - verify that it works
-// Add to source control - add release notes, etc
-// Use dynamic programming to cache results and speed up run time
+// Add FR scenario
 // Add ability for wish-listing gear
 // Add in command line arguments
-// Remove strictly worse items
 // Make number of sets a CLA
+// Build addon for exporting gear from character, bags, bank?
+// Use dynamic programming to cache results and speed up run time
+// Remove strictly worse items
 // Better error handling when you don't get at least N sets when filtering by hit/armor class
 // Write test cases

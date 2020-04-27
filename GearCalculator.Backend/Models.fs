@@ -33,11 +33,22 @@ type ItemStats = {
     Armor       : int
 }
 
+type Bonus = {
+    ItemsRequired : int
+    Stats         : ItemStats
+}
+
+type SetBonus = {
+    Name    : string
+    Bonuses : Bonus list
+}
+
 type Item = {
     Name       : string
     Slot       : ItemSlot
     ArmorClass : ArmorClass option
     Stats      : ItemStats
+    SetBonus   : SetBonus option
 }
 
 type DbItem = {
@@ -53,6 +64,8 @@ type DbItem = {
     Crit        : int
     Hit         : int
     Armor       : int
+    BonusName   : string
+    Bonus       : string
 }
 
 type StatWeights = {

@@ -1,5 +1,7 @@
 ﻿module Mappers
 
+open System
+open Newtonsoft.Json
 open Models
 
 let mapStrToArmorClassOption str =
@@ -44,4 +46,13 @@ let mapDbItemToItem (dbItem : DbItem) =
             Hit         = dbItem.Hit
             Armor       = dbItem.Armor
         }
+
+        SetBonus = 
+            match String.IsNullOrWhiteSpace dbItem.BonusName with
+            | true  -> None
+            | false -> 
+                {
+                    Name    = dbItem.BonusName
+                    Bonuses = JsonConvert.DeserializeObject<Bonus list> dbItem.Bonus
+                } |> Some
     }

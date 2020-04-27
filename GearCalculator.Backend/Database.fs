@@ -54,11 +54,14 @@ let queryItem conn itemName =
                 t.AttackPower,
                 t.Crit,
                 t.Hit,
-                t.Armor
+                t.Armor,
+                b.Name as BonusName,
+                b.Bonus
              FROM dbo.Items i
              JOIN dbo.ItemSlots s ON s.SlotID = i.ItemSlot
              JOIN dbo.ArmorClasses a ON a.ClassID = i.ArmorClass
              JOIN dbo.ItemStats t ON t.ItemID = i.ID
+             LEFT JOIN dbo.SetBonuses b ON b.ID = i.SetBonus
              WHERE i.Name = '%s'"
              itemName
     

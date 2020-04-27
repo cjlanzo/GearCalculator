@@ -15,13 +15,7 @@ let addStats (x : ItemStats) (y : ItemStats) =
         Armor       = x.Armor + y.Armor
     }
 
-let calculateEap statWeights (stats : ItemStats) =
-    (stats.Strength |> float) * statWeights.Strength +
-    (stats.Agility |> float) * statWeights.Agility +
-    (stats.AttackPower |> float) +
-    (stats.Crit |> float) * statWeights.Crit
-
-let calculateSetValues statWeights set =
+let sumStats (statsList : ItemStats list) =
     let emptyStats = {
         Strength    = 0
         Agility     = 0
@@ -34,31 +28,56 @@ let calculateSetValues statWeights set =
         Armor       = 0
     }
 
-    let stats = List.fold (fun acc item -> addStats acc item.Stats) emptyStats set
+    List.fold (fun acc (stats : ItemStats) -> addStats acc stats) emptyStats statsList
+
+let calculateEap statWeights (stats : ItemStats) =
+    (stats.Strength |> float) * statWeights.Strength +
+    (stats.Agility |> float) * statWeights.Agility +
+    (stats.AttackPower |> float) +
+    (stats.Crit |> float) * statWeights.Crit
+
+let calculateSetValues statWeights (set : Item list) =
+    let statsFromItems = 
+        set
+        |> List.map (fun s -> s.Stats)
+        |> sumStats
+
+    let statsFromBonuses =
+        set
+        |> List.filter (fun item -> item.SetBonus.IsSome)
+        |> List.map (fun item -> item.SetBonus.Value)
+        |> List.groupBy (fun sb -> sb.Name)
+        |> List.map (fun (_, bonuses) ->
+            bonuses
+            |> List.head
+            |> fun sb -> sb.Bonuses
+            |> List.filter (fun bonus -> bonus.ItemsRequired <= bonuses.Length)
+            |> List.map (fun bonus -> bonus.Stats)
+            |> sumStats)
+        |> sumStats
+
+    let totalStats = addStats statsFromItems statsFromBonuses
 
     {
         Items = set
-        Hit   = stats.Hit
-        EAP   = calculateEap statWeights stats
+        Hit   = totalStats.Hit
+        EAP   = calculateEap statWeights totalStats
     }
 
 let filterSetsByHit hitThreshold sets =
+    List.filter (fun set -> set.Hit >= hitThreshold) sets
+
+let filterSetsByArmorClass armorThreshold sets =
     sets
     |> List.filter (fun set ->
-        set
-        |> List.fold (fun acc item -> 
-            acc + item.Stats.Hit) 0 >= hitThreshold)
-
-let filterSetsByArmorClass armorThreshold (sets : Item list list) =
-    sets
-    |> List.filter (
-        List.fold (fun acc item ->
+        set.Items
+        |> List.fold (fun acc item ->
             acc && (item.ArmorClass.IsNone || item.ArmorClass.Value >= armorThreshold)) true)
 
-let calculateBestSets number scenario sets =
+let calculateBestSets number scenario (sets : Item list list) =
     sets
+    |> List.map (calculateSetValues scenario.StatWeights)
     |> filterSetsByHit scenario.HitRequirement
     |> filterSetsByArmorClass scenario.ArmorRequirement
-    |> List.map (calculateSetValues scenario.StatWeights)
     |> List.sortByDescending (fun set -> set.EAP)
     |> List.take number

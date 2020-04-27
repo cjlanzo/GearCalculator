@@ -30,52 +30,65 @@ INSERT INTO ArmorClasses (Name) VALUES ('Leather')
 INSERT INTO ArmorClasses (Name) VALUES ('Mail')
 INSERT INTO ArmorClasses (Name) VALUES ('Plate')
 
+CREATE TABLE SetBonuses (
+	ID INT IDENTITY(1,1) PRIMARY KEY,
+	Name VARCHAR(255) NOT NULL,
+	Bonus VARCHAR(MAX) NOT NULL
+);
+
+INSERT INTO SetBonuses (Name, Bonus) VALUES
+	('Devilsaur Armor', '[ { "itemsRequired": 2, "stats": { "hit": 2 } } ]'),
+	('Black Dragon Mail', '[ { "itemsRequired": 2, "stats": { "hit": 1 } }, { "itemsRequired": 3, "stats": { "crit": 2 } } ]')
+
 CREATE TABLE Items (
 	ID INT IDENTITY(1,1) PRIMARY KEY,
 	Name VARCHAR(255) NOT NULL,
 	ItemSlot INT FOREIGN KEY REFERENCES ItemSlots(SlotID),
 	ArmorClass INT FOREIGN KEY REFERENCES ArmorClasses(ClassID),
 	Phase INT NOT NULL,
+	SetBonus INT FOREIGN KEY REFERENCES SetBonuses(ID),
 	WowHeadID INT
 );
 
-INSERT INTO Items (Name, ItemSlot, ArmorClass, Phase) VALUES 
-	('Onyxia Tooth Pendant', 2, 1, 1),
-	('Vambraces of the Sadist', 6, 5, 1),
-	('Devilsaur Gauntlets', 7, 3, 1),
-	('Devilsaur Leggings', 9, 3, 1),
-	('Bloodmail Boots', 10, 4, 1),
-	('Blackhand''s Breadth', 12, 1, 1),
-	('Hand of Justice', 12, 1, 1),
-	('Onslaught Girdle', 8, 5, 1),
-	('Spaulders of Valor', 3, 5, 1),
-	('Eldritch Reinforced Legplates', 9, 5, 1),
-	('Mark of Fordring', 2, 1, 1),
-	('Lionheart Helm', 1, 5, 1),
-	('Truestrike Shoulders', 3, 3, 1),
-	('Battleborn Armbraces', 6, 5, 1),
-	('Sapphiron Scale Boots', 10, 5, 1),
-	('Striker''s Mark', 13, 1, 1),
-	('Don Julio''s Band', 11, 1, 2),
-	('Flameguard Gauntlets', 7, 5, 1),
-	('Savage Gladiator Chain', 5, 4, 1),
-	('Cape of the Black Baron', 4, 1, 1),
-	('Wristguards of Stability', 6, 3, 1),
-	('Master Dragonslayer''s Ring', 11, 1, 3),
-	('Quickstrike Ring', 11, 1, 1),
-	('Cadaverous Armor', 5, 3, 1),
-	('Omokk''s Girth Restrainer', 8, 5, 1),
-	('Blackstone Ring', 11, 1, 1),
-	('Brigam Girdle', 8, 5, 1),
-	('Tarnished Elven Ring', 11, 1, 1),
-	('Riphook', 13, 1, 1),
-	('Satyr''s Bow', 13, 1, 1),
-	('Zandalar Vindicator''s Armguards', 6, 5, 4),
-	('Sacrificial Gauntlets', 7, 5, 4),
-	('Bloodsoaked Pauldrons', 3, 5, 4),
-	('Abyssal Leather Leggings of Striking', 9, 3, 4)
+INSERT INTO Items (Name, ItemSlot, ArmorClass, Phase, SetBonus) VALUES 
+	('Onyxia Tooth Pendant', 2, 1, 1, NULL),
+	('Vambraces of the Sadist', 6, 5, 1, NULL),
+	('Devilsaur Gauntlets', 7, 3, 1, 1),
+	('Devilsaur Leggings', 9, 3, 1, 1),
+	('Bloodmail Boots', 10, 4, 1, NULL),
+	('Blackhand''s Breadth', 12, 1, 1, NULL),
+	('Hand of Justice', 12, 1, 1, NULL),
+	('Onslaught Girdle', 8, 5, 1, NULL),
+	('Spaulders of Valor', 3, 5, 1, NULL),
+	('Eldritch Reinforced Legplates', 9, 5, 1, NULL),
+	('Mark of Fordring', 2, 1, 1, NULL),
+	('Lionheart Helm', 1, 5, 1, NULL),
+	('Truestrike Shoulders', 3, 3, 1, NULL),
+	('Battleborn Armbraces', 6, 5, 1, NULL),
+	('Sapphiron Scale Boots', 10, 5, 1, NULL),
+	('Striker''s Mark', 13, 1, 1, NULL),
+	('Don Julio''s Band', 11, 1, 2, NULL),
+	('Flameguard Gauntlets', 7, 5, 1, NULL),
+	('Savage Gladiator Chain', 5, 4, 1, NULL),
+	('Cape of the Black Baron', 4, 1, 1, NULL),
+	('Wristguards of Stability', 6, 3, 1, NULL),
+	('Master Dragonslayer''s Ring', 11, 1, 3, NULL),
+	('Quickstrike Ring', 11, 1, 1, NULL),
+	('Cadaverous Armor', 5, 3, 1, NULL),
+	('Omokk''s Girth Restrainer', 8, 5, 1, NULL),
+	('Blackstone Ring', 11, 1, 1, NULL),
+	('Brigam Girdle', 8, 5, 1, NULL),
+	('Tarnished Elven Ring', 11, 1, 1, NULL),
+	('Riphook', 13, 1, 1, NULL),
+	('Satyr''s Bow', 13, 1, 1, NULL),
+	('Zandalar Vindicator''s Armguards', 6, 5, 4, NULL),
+	('Sacrificial Gauntlets', 7, 5, 4, NULL),
+	('Bloodsoaked Pauldrons', 3, 5, 4, NULL),
+	('Abyssal Leather Leggings of Striking', 9, 3, 4, NULL),
+	('Black Dragonscale Boots', 10, 4, 1, 2),
+	('Black Dragonscale Leggings', 9, 4, 1, 2),
+	('Black Dragonscale Shoulders', 3, 4, 1, 2)
 
-	
 CREATE TABLE ItemStats (
 	ID INT IDENTITY(1,1) PRIMARY KEY,
 	ItemID INT FOREIGN KEY REFERENCES Items(ID),
@@ -129,13 +142,11 @@ INSERT INTO ItemStats (ItemID, Strength, Agility, Stamina, Intellect, Spirit, At
 		(31, 13, 13, 13, 0, 0, 0, 0, 0, 304, 0, 0, 0, 0, 0),
 		(32, 19, 0, 0, 0, 0, 0, 1, 1, 441, 0, 0, 0, 0, 0),
 		(33, 16, 11, 16, 0, 0, 0, 0, 0, 552, 0, 0, 0, 0, 0),
-		(34, 15, 15, 15, 0, 0, 0, 1, 0, 152, 0, 0, 0, 0, 0)
+		(34, 15, 15, 15, 0, 0, 0, 1, 0, 152, 0, 0, 0, 0, 0),
+		(35, 0, 0, 10, 0, 0, 28, 0, 0, 270, 24, 0, 0, 0, 0),
+		(36, 0, 0, 8, 0, 0, 54, 0, 0, 320, 13, 0, 0, 0, 0),
+		(37, 0, 0, 9, 0, 0, 40, 0, 0, 266, 6, 0, 0, 0, 0)
 		--(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-
---CREATE TABLE SetBonuses (
---	ID INT IDENTITY(1,1) PRIMARY KEY,
---	Name VARCHAR(255) NOT NULL
---);
 
 CREATE TABLE Users (
 	ID INT IDENTITY(1,1) PRIMARY KEY,
