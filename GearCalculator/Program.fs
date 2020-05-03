@@ -3,7 +3,6 @@
 open Models
 open Database
 open SetBuilder
-open StatCalculator
 
 let connStr = "Data Source=localhost; Database=WoWClassicGear; Integrated Security=true;"
 
@@ -39,27 +38,26 @@ let main args =
         readItemsFromFile "./mygear.txt" 
         |> Seq.map (queryItem conn)
         |> Seq.toList
-
-    let sets = 
-        items
-        |> generateSets
     
-    Presets.scenarios
-    |> List.map (fun scenario -> scenario.Name, calculateBestSets 2 scenario sets)
+    Presets.standardScenarios
+    //[ Presets.zgLeatherBoss; Presets.zgLeatherTrash; Presets.zgLeatherBossDw; Presets.zgLeatherBossDwHigh ]
+    |> List.map (fun scenario -> scenario.Name, calculateBestSets 1 scenario items)
     |> List.collect (fun (name, sets) -> stringifyScenario name sets)
     |> List.toArray
-    |> fun lines -> File.WriteAllLines ("output.txt", lines)
+    |> fun lines -> File.WriteAllLines ("test_output.txt", lines)
 
     0
 
 
 // TODO
+// Clean up needing so many text files
+// Clean up presets
 // Add FR scenario
-// Add ability for wish-listing gear
 // Add in command line arguments
+
+// Look at how item rack stores sets and potentially write something to convert a set from this into an item rack set
 // Make number of sets a CLA
 // Build addon for exporting gear from character, bags, bank?
 // Use dynamic programming to cache results and speed up run time
-// Remove strictly worse items
 // Better error handling when you don't get at least N sets when filtering by hit/armor class
 // Write test cases

@@ -121,7 +121,10 @@ INSERT INTO Items (Name, ItemSlot, ArmorClass, Phase, SetBonus) VALUES
 	('Legplates of Qiraji Command', 9, 5, 5, NULL),
 	('Bracers of Brutality', 6, 5, 5, NULL),
 	('Crossbow of Imminent Doom', 13, 1, 5, NULL),
-	('Choker of the Shifting Sands', 2, 1, 5, NULL)
+	('Choker of the Shifting Sands', 2, 1, 5, NULL),
+	('Mantle of Wicked Revenge', 3, 3, 5, NULL),
+	('Scaled Sand Reaver Leggings', 9, 4, 5, NULL)
+	-- earthstrike
 
 CREATE TABLE ItemStats (
 	ID INT IDENTITY(1,1) PRIMARY KEY,
@@ -213,7 +216,9 @@ INSERT INTO ItemStats (ItemID, Strength, Agility, Stamina, Intellect, Spirit, At
 	(68, 20, 0, 13, 0, 0, 0, 2, 0, 644, 0, 0, 0, 0, 0),
 	(69, 21, 12, 9, 0, 0, 0, 0, 0, 356, 0, 0, 0, 0, 0),
 	(70, 5, 7, 5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0),
-	(71, 0, 0, 16, 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 0)
+	(71, 0, 0, 16, 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 0),
+	(72, 16, 30, 14, 0, 0, 0, 0, 0, 170, 0, 0, 0, 0, 0),
+	(73, 0, 0, 23, 10, 0, 62, 2, 0, 427, 0, 0, 0, 0, 0)
 	--(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 
 CREATE TABLE Users (

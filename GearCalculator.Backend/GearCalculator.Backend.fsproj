@@ -11,8 +11,8 @@
     <Compile Include="Presets.fs" />
     <Compile Include="Mappers.fs" />
     <Compile Include="Database.fs" />
-    <Compile Include="SetBuilder.fs" />
     <Compile Include="StatCalculator.fs" />
+    <Compile Include="SetBuilder.fs" />
   </ItemGroup>
 
   <ItemGroup>

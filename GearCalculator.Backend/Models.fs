@@ -75,6 +75,7 @@ type StatWeights = {
     Intellect : float
     Spirit    : float
     Crit      : float
+    ExcessHit : float
 }
 
 type Scenario = {

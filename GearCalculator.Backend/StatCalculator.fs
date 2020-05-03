@@ -1,5 +1,6 @@
 ﻿module StatCalculator
 
+open System
 open Models
 
 let addStats (x : ItemStats) (y : ItemStats) =
@@ -30,13 +31,19 @@ let sumStats (statsList : ItemStats list) =
 
     List.fold (fun acc (stats : ItemStats) -> addStats acc stats) emptyStats statsList
 
-let calculateEap statWeights (stats : ItemStats) =
+let calculateEap hitThreshold statWeights (stats : ItemStats) =
+    let excessHit = 
+        stats.Hit - hitThreshold
+        |> fun h -> Math.Max(h, 0)
+        |> float
+
     (stats.Strength |> float) * statWeights.Strength +
     (stats.Agility |> float) * statWeights.Agility +
     (stats.AttackPower |> float) +
-    (stats.Crit |> float) * statWeights.Crit
+    (stats.Crit |> float) * statWeights.Crit +
+    excessHit * statWeights.ExcessHit
 
-let calculateSetValues statWeights (set : Item list) =
+let calculateSetValues hitThreshold statWeights (set : Item list) =
     let statsFromItems = 
         set
         |> List.map (fun s -> s.Stats)
@@ -61,23 +68,5 @@ let calculateSetValues statWeights (set : Item list) =
     {
         Items = set
         Hit   = totalStats.Hit
-        EAP   = calculateEap statWeights totalStats
+        EAP   = calculateEap hitThreshold statWeights totalStats
     }
-
-let filterSetsByHit hitThreshold sets =
-    List.filter (fun set -> set.Hit >= hitThreshold) sets
-
-let filterSetsByArmorClass armorThreshold sets =
-    sets
-    |> List.filter (fun set ->
-        set.Items
-        |> List.fold (fun acc item ->
-            acc && (item.ArmorClass.IsNone || item.ArmorClass.Value >= armorThreshold)) true)
-
-let calculateBestSets number scenario (sets : Item list list) =
-    sets
-    |> List.map (calculateSetValues scenario.StatWeights)
-    |> filterSetsByHit scenario.HitRequirement
-    |> filterSetsByArmorClass scenario.ArmorRequirement
-    |> List.sortByDescending (fun set -> set.EAP)
-    |> List.take number

@@ -10,6 +10,7 @@ let standardStatWeights =
         Intellect = 0.
         Spirit    = 0.
         Crit      = 30.
+        ExcessHit = 0.
     }
 
 let zgStatWeights = 
@@ -21,9 +22,24 @@ let zgStatWeights =
         Spirit    = standardStatWeights.Spirit * 1.15
     }
 
+let standardDualWieldStatWeights = 
+    { standardStatWeights with
+        ExcessHit = 10.
+    }
+
+let zgDualWieldStatWeights =
+    { zgStatWeights with
+        ExcessHit = 10.
+    }
+
+let zgDualWieldStatWeightsHigh =
+    { zgStatWeights with
+        ExcessHit = 18.
+    }
+
 let zgLeatherBoss =
     {
-        Name = "ZG - 9 Hit - Leather+"
+        Name = "ZG - 2H - 9 Hit - Leather+"
         HitRequirement = 9
         StatWeights = zgStatWeights
         ArmorRequirement = ArmorClass.Leather
@@ -31,7 +47,7 @@ let zgLeatherBoss =
     
 let zgMailBoss =
     {
-        Name = "ZG - 9 Hit - Mail+"
+        Name = "ZG - 2H - 9 Hit - Mail+"
         HitRequirement = 9
         StatWeights = zgStatWeights
         ArmorRequirement = ArmorClass.Mail
@@ -39,7 +55,7 @@ let zgMailBoss =
         
 let zgLeatherTrash =
     {
-        Name = "ZG - 6 Hit - Leather+"
+        Name = "ZG - 2H - 6 Hit - Leather+"
         HitRequirement = 6
         StatWeights = zgStatWeights
         ArmorRequirement = ArmorClass.Leather
@@ -47,7 +63,7 @@ let zgLeatherTrash =
             
 let zgMailTrash =
     {
-        Name = "ZG - 6 Hit - Mail+"
+        Name = "ZG - 2H - 6 Hit - Mail+"
         HitRequirement = 6
         StatWeights = zgStatWeights
         ArmorRequirement = ArmorClass.Mail
@@ -55,7 +71,7 @@ let zgMailTrash =
                 
 let stdLeatherBoss =
     {
-        Name = "Std - 9 Hit - Leather+"
+        Name = "Std - 2H - 9 Hit - Leather+"
         HitRequirement = 9
         StatWeights = standardStatWeights
         ArmorRequirement = ArmorClass.Leather
@@ -63,7 +79,7 @@ let stdLeatherBoss =
                     
 let stdMailBoss =
     {
-        Name = "Std - 9 Hit - Mail+"
+        Name = "Std - 2H - 9 Hit - Mail+"
         HitRequirement = 9
         StatWeights = standardStatWeights
         ArmorRequirement = ArmorClass.Mail
@@ -71,7 +87,7 @@ let stdMailBoss =
                         
 let stdLeatherTrash =
     {
-        Name = "Std - 6 Hit - Leather+"
+        Name = "Std - 2H - 6 Hit - Leather+"
         HitRequirement = 6
         StatWeights = standardStatWeights
         ArmorRequirement = ArmorClass.Leather
@@ -79,13 +95,37 @@ let stdLeatherTrash =
 
 let stdMailTrash =
     {
-        Name = "Std - 6 Hit - Mail+"
+        Name = "Std - 2H - 6 Hit - Mail+"
         HitRequirement = 6
         StatWeights = standardStatWeights
         ArmorRequirement = ArmorClass.Mail
     }
 
-let scenarios =
+let stdLeatherBossDw =
+    {
+        Name = "Std - DW - 6 hit - Leather+"
+        HitRequirement = 6
+        StatWeights = standardDualWieldStatWeights
+        ArmorRequirement = ArmorClass.Leather
+    }
+
+let zgLeatherBossDw =
+    {
+        Name = "ZG - DW - 6 hit - Excess = 10AP - Leather+"
+        HitRequirement = 6
+        StatWeights = zgDualWieldStatWeights
+        ArmorRequirement = ArmorClass.Leather
+    }
+
+let zgLeatherBossDwHigh =
+    {
+        Name = "ZG - DW - 6 hit - Excess = 18AP - Leather+"
+        HitRequirement = 6
+        StatWeights = zgDualWieldStatWeightsHigh
+        ArmorRequirement = ArmorClass.Leather
+    }
+
+let standardScenarios =
     [
         zgLeatherBoss
         zgMailBoss
@@ -95,4 +135,12 @@ let scenarios =
         stdMailBoss
         stdLeatherTrash
         stdMailTrash
+    ]
+
+let stdVsDwScenario =
+    [
+        zgLeatherBoss
+        zgLeatherBossDw
+        stdLeatherBoss
+        stdLeatherBossDw
     ]
