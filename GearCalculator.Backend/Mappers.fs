@@ -34,6 +34,7 @@ let mapDbItemToItem (dbItem : DbItem) =
         Name       = dbItem.Name
         Slot       = mapStrToItemSlot dbItem.SlotName
         ArmorClass = mapStrToArmorClassOption dbItem.ArmorClass
+        Phase      = dbItem.Phase
 
         Stats = {
             Strength    = dbItem.Strength

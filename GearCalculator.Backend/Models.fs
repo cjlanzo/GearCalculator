@@ -49,6 +49,7 @@ type Item = {
     ArmorClass : ArmorClass option
     Stats      : ItemStats
     SetBonus   : SetBonus option
+    Phase      : int
 }
 
 type DbItem = {
@@ -66,6 +67,7 @@ type DbItem = {
     Armor       : int
     BonusName   : string
     Bonus       : string
+    Phase       : int
 }
 
 type StatWeights = {
@@ -83,6 +85,7 @@ type Scenario = {
     HitRequirement   : int
     StatWeights      : StatWeights
     ArmorRequirement : ArmorClass
+    RequiredItems    : string list
 }
 
 type Set = {

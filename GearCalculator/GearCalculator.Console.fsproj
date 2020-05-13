@@ -6,25 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="aqprobable.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="bds.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mygear.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="p5bis.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="zgbwlprobable.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Compile Include="CommandLineSetup.fs" />
+    <Compile Include="Options.fs" />
+    <Compile Include="OptionMappers.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="FluentCommandLineParser-netstandard" Version="1.4.3.13" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GearCalculator.Backend\GearCalculator.Backend.fsproj" />

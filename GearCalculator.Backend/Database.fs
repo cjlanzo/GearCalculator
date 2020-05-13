@@ -31,7 +31,8 @@ let queryItems conn =
             t.Hit,
             t.Armor,
             b.Name as BonusName,
-            b.Bonus
+            b.Bonus,
+            i.Phase
          FROM dbo.Items i
          JOIN dbo.ItemSlots s ON s.SlotID = i.ItemSlot
          JOIN dbo.ArmorClasses a ON a.ClassID = i.ArmorClass
@@ -59,7 +60,8 @@ let queryItem conn itemName =
                 t.Hit,
                 t.Armor,
                 b.Name as BonusName,
-                b.Bonus
+                b.Bonus,
+                i.Phase
              FROM dbo.Items i
              JOIN dbo.ItemSlots s ON s.SlotID = i.ItemSlot
              JOIN dbo.ArmorClasses a ON a.ClassID = i.ArmorClass

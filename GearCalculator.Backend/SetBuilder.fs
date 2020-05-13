@@ -81,11 +81,20 @@ let removeStrictlyWorseItems scenario items =
         |> List.groupBy (fun item -> item.Stats.Hit)
         |> List.collect (fun (hitAmount, itemsByHit) -> itemsAllowedBySlot slot |> keepRelevantItems scenario itemsByHit))
 
+let removeNonSpecifiedItems requiredItems items =
+    items
+    |> List.groupBy (fun item -> item.Slot)
+    |> List.collect (fun (_, itemsBySlot) ->
+        match List.filter (fun (item : Item) -> List.contains item.Name requiredItems) itemsBySlot with
+        | []  -> itemsBySlot
+        | res -> res)
+
 let removeItemsBelowArmorThreshold armorThreshold items =
     List.filter (fun (item : Item) -> item.ArmorClass.IsNone || item.ArmorClass.Value >= armorThreshold) items
 
 let calculateBestSets number scenario (items : Item list) =
     items
+    |> removeNonSpecifiedItems scenario.RequiredItems
     |> removeItemsBelowArmorThreshold scenario.ArmorRequirement
     |> removeStrictlyWorseItems scenario
     |> generateSets // using a cache here for generated sets by an item list could be useful?

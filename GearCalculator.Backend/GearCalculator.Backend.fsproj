@@ -8,7 +8,6 @@
     <None Include="Scripts\DbDown.sql" />
     <None Include="Scripts\DbUp.sql" />
     <Compile Include="Models.fs" />
-    <Compile Include="Presets.fs" />
     <Compile Include="Mappers.fs" />
     <Compile Include="Database.fs" />
     <Compile Include="StatCalculator.fs" />

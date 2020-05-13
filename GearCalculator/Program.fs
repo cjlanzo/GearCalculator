@@ -1,5 +1,8 @@
 ﻿open System.IO
 
+open CommandLineSetup
+open Options
+open OptionMappers
 open Models
 open Database
 open SetBuilder
@@ -31,32 +34,41 @@ let stringifyScenario name (sets : Set list) =
 
 [<EntryPoint>]
 let main args =
+    match parseArgs args with
+    | ClaHelp        -> 0
+    | ClaError err   -> failwithf "%s" err
+    | ClaSuccess cla ->
+        let options = mapClaToRunOptions cla
 
-    use conn = createConnection connStr
+        use conn = createConnection connStr
 
-    let items =
-        readItemsFromFile "./mygear.txt" 
-        |> Seq.map (queryItem conn)
-        |> Seq.toList
-    
-    Presets.standardScenarios
-    //[ Presets.zgLeatherBoss; Presets.zgLeatherTrash; Presets.zgLeatherBossDw; Presets.zgLeatherBossDwHigh ]
-    |> List.map (fun scenario -> scenario.Name, calculateBestSets 1 scenario items)
-    |> List.collect (fun (name, sets) -> stringifyScenario name sets)
-    |> List.toArray
-    |> fun lines -> File.WriteAllLines ("test_output.txt", lines)
+        let items = 
+            match options.InputOptions with
+            | Text textOptions -> 
+                readItemsFromFile textOptions.InputFile
+                |> Seq.map (queryItem conn)
+                |> Seq.toList
+                
+            | Database dbOptions -> 
+                queryItems conn 
+                |> List.filter (fun item -> item.Phase <= dbOptions.PhaseThreshold)
+                |> List.filter (fun item -> not <| List.contains item.Name dbOptions.Exclusions)
 
-    0
+        options.RunModeOptions
+        |> mapRunOptionsToScenarios
+        |> List.map (fun scenario -> scenario.Name, calculateBestSets options.SetsToInclude scenario items)
+        |> List.collect (fun (name, sets) -> stringifyScenario name sets)
+        |> List.toArray
+        |> fun lines -> File.WriteAllLines (options.OutputFile, lines)
+
+        0
 
 
 // TODO
-// Clean up needing so many text files
-// Clean up presets
+// Add rank 10 gear
 // Add FR scenario
-// Add in command line arguments
 
 // Look at how item rack stores sets and potentially write something to convert a set from this into an item rack set
-// Make number of sets a CLA
 // Build addon for exporting gear from character, bags, bank?
 // Use dynamic programming to cache results and speed up run time
 // Better error handling when you don't get at least N sets when filtering by hit/armor class
