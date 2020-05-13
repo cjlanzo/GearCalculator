@@ -1,5 +1,6 @@
 ﻿module SetBuilder
 
+open System
 open Models
 open StatCalculator
 
@@ -60,13 +61,15 @@ let filterSetsByArmorClass armorThreshold sets =
 let keepRelevantItems scenario items numberToKeep =
     let hasBonus, noBonus = List.partition (fun item -> item.SetBonus.IsSome) items
     
+    let cappedNumberToKeep = Math.Min(numberToKeep, noBonus.Length)
+
     let bestItems = 
         match noBonus with
         | [] -> []
         | _  ->
             noBonus
             |> List.sortByDescending (fun item -> calculateEap scenario.HitRequirement scenario.StatWeights item.Stats)
-            |> List.take numberToKeep
+            |> List.take cappedNumberToKeep
         
     hasBonus @ bestItems
 
