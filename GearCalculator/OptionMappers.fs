@@ -38,6 +38,17 @@ let mapClaToTextInputOptions (cla : CommandLineArgs) =
     | false -> Text { InputFile = cla.InputFile }
     | true  -> failwithf "InputFile cannot be blank in Text Mode"
 
+let createStatWeights cla multiplier = 
+    {
+        Strength = cla.StrengthWeight * multiplier
+        Agility = cla.AgilityWeight * multiplier
+        Stamina = cla.StaminaWeight * multiplier
+        Intellect = cla.IntellectWeight * multiplier
+        Spirit = cla.SpiritWeight * multiplier
+        Crit = cla.CritWeight
+        ExcessHit = cla.ExcessHitWeight
+    }
+
 let mapClaToComparisonModeOptions (cla : CommandLineArgs) =
     let multiplier = 
         match cla.IncludeZgBuff with
@@ -70,47 +81,19 @@ let mapClaToComparisonModeOptions (cla : CommandLineArgs) =
                 | Some ac -> ac
                 | None    -> failwithf "Could not parse %s to ArmorClass" cla.ArmorThresholds
 
-        StatWeights = 
-            {
-                Strength = cla.StrengthWeight * multiplier
-                Agility = cla.AgilityWeight * multiplier
-                Stamina = cla.StaminaWeight * multiplier
-                Intellect = cla.IntellectWeight * multiplier
-                Spirit = cla.SpiritWeight * multiplier
-                Crit = cla.CritWeight
-                ExcessHit = cla.ExcessHitWeight
-            }
+        StatWeights = createStatWeights cla multiplier
     } |> ComparisonMode
 
 let mapClaToScenarioModeOptions (cla : CommandLineArgs) =
     let statWeights =
-        {
-            Strength = cla.StrengthWeight
-            Agility = cla.AgilityWeight
-            Stamina = cla.StaminaWeight
-            Intellect = cla.IntellectWeight
-            Spirit = cla.SpiritWeight
-            Crit = cla.CritWeight
-            ExcessHit = cla.ExcessHitWeight
-        }
+        match cla.ExcludeStdStats with
+        | true  -> []
+        | false -> [ createStatWeights cla 1.0 ]
     
     let zgStatWeights =
         match cla.IncludeZgBuff with
         | false -> []
-        | true  -> 
-            let zgMultipler = 1.15
-
-            [
-                {
-                    Strength = cla.StrengthWeight * zgMultipler
-                    Agility = cla.AgilityWeight * zgMultipler
-                    Stamina = cla.StaminaWeight * zgMultipler
-                    Intellect = cla.IntellectWeight * zgMultipler
-                    Spirit = cla.SpiritWeight * zgMultipler
-                    Crit = cla.CritWeight
-                    ExcessHit = cla.ExcessHitWeight
-                }
-            ]
+        | true  -> [ createStatWeights cla 1.15 ]
 
     {
         HitThresholds = cla.HitThresholds |> parseStrToIntArr |> validateListSize 1
@@ -125,7 +108,7 @@ let mapClaToScenarioModeOptions (cla : CommandLineArgs) =
                 | None    -> failwithf "Could not parse %s to ArmorClass" cla.ArmorThresholds)
             |> validateListSize 1
 
-        StatWeights = [ statWeights ] @ zgStatWeights
+        StatWeights = statWeights @ zgStatWeights
     } |> ScenarioMode
 
 

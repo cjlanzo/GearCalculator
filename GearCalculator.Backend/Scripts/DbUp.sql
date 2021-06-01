@@ -38,7 +38,9 @@ CREATE TABLE SetBonuses (
 
 INSERT INTO SetBonuses (Name, Bonus) VALUES
 	('Devilsaur Armor', '[ { "itemsRequired": 2, "stats": { "hit": 2 } } ]'),
-	('Black Dragon Mail', '[ { "itemsRequired": 2, "stats": { "hit": 1 } }, { "itemsRequired": 3, "stats": { "crit": 2 } } ]')
+	('Black Dragon Mail', '[ { "itemsRequired": 2, "stats": { "hit": 1 } }, { "itemsRequired": 3, "stats": { "crit": 2 } } ]'),
+	('Champion''s Battlearmor', '[ { "itemsRequired": 2, "stats": { "attackpower": 40 } } ]'),
+	('Major Mojo Infusion', '[ { "itemsRequired": 2, "stats": { "attackpower": 30 } } ]')
 
 CREATE TABLE Items (
 	ID INT IDENTITY(1,1) PRIMARY KEY,
@@ -65,7 +67,7 @@ INSERT INTO Items (Name, ItemSlot, ArmorClass, Phase, SetBonus) VALUES
 	('Lionheart Helm', 1, 5, 1, NULL),
 	('Truestrike Shoulders', 3, 3, 1, NULL),
 	('Battleborn Armbraces', 6, 5, 1, NULL),
-	('Sapphiron Scale Boots', 10, 5, 1, NULL),
+	('Sapphiron''s Scale Boots', 10, 5, 1, NULL),
 	('Striker''s Mark', 13, 1, 1, NULL),
 	('Don Julio''s Band', 11, 1, 2, NULL),
 	('Flameguard Gauntlets', 7, 5, 1, NULL),
@@ -113,7 +115,7 @@ INSERT INTO Items (Name, ItemSlot, ArmorClass, Phase, SetBonus) VALUES
 	('Conqueror''s Legguards', 9, 5, 5, NULL),
 	('Titanic Leggings', 9, 5, 5, NULL),
 	('Belt of Never-ending Agony', 8, 3, 5, NULL),
-	('Gaunlets of Annihilation', 7, 5, 5, NULL),
+	('Gauntlets of Annihilation', 7, 5, 5, NULL),
 	('Conqueror''s Breastplate', 5, 5, 5, NULL),
 	('Cloak of the Fallen God', 4, 1, 5, NULL),
 	('Drape of Unyielding Strength', 4, 1, 5, NULL),
@@ -123,7 +125,45 @@ INSERT INTO Items (Name, ItemSlot, ArmorClass, Phase, SetBonus) VALUES
 	('Crossbow of Imminent Doom', 13, 1, 5, NULL),
 	('Choker of the Shifting Sands', 2, 1, 5, NULL),
 	('Mantle of Wicked Revenge', 3, 3, 5, NULL),
-	('Scaled Sand Reaver Leggings', 9, 4, 5, NULL)
+	('Scaled Sand Reaver Leggings', 9, 4, 5, NULL),
+	('Champion''s Plate Helm', 1, 5, 2, 3),
+	('Champion''s Plate Shoulders', 3, 5, 2, 3),
+	('Legionnaire''s Plate Hauberk', 5, 5, 2, 3),
+	('Blood Guard''s Plate Gauntlets', 7, 5, 2, 3),
+	('Legionnaire''s Plate Leggings', 9, 5, 2, 3),
+	('Blood Guard''s Plate Greaves', 10, 5, 2, 3),
+	('General''s Plate Leggings', 9, 5, 2, NULL),
+	('General''s Plate Boots', 10, 5, 2, NULL),
+	('Bloodseeker', 13, 1, 2, NULL),
+	('Boots of the Vanguard', 10, 3, 5, NULL),
+	('Zandalar Vindicator''s Belt', 8, 5, 4, NULL),
+	('Slime Kickers', 10, 5, 5, NULL),
+	('Seal of Jin', 11, 1, 4, 4),
+	('Band of Jin', 11, 1, 4, 4),
+	('Chitinous Shoulderguards', 3, 3, 5, NULL),
+	('Blastershot Launcher', 13, 1, 1, NULL),
+	('Gurubashi Dwarf Destroyer', 13, 1, 4, NULL),
+	('Blackmist Armguards', 6, 3, 1, NULL),
+	('Ring of Fury', 11, 1, 5, NULL),
+	('Blackveil Cape', 4, 1, 1, NULL),
+	('Abyssal Mail Legguards of Striking', 9, 4, 4, NULL),
+	('Painweaver Band', 11, 1, 1, NULL),
+	('Crown of Destruction', 1, 4, 1, NULL),
+	('Boots of the Shadow Flame', 10, 3, 3, NULL),
+	('Wristguards of True Flight', 6, 4, 1, NULL),
+	('Conqueror''s Greaves', 10, 5, 5, NULL),
+	('Triad Girdle', 8, 5, 5, NULL),
+	('Wristguards of Vengeance', 6, 5, 6, NULL),
+	('Cloak of the Scourge', 4, 1, 6, NULL),
+	('Legplates of Carnage', 9, 5, 6, NULL),
+	('Band of Unnatural Forces', 11, 1, 6, NULL),
+	('Girdle of the Mentor', 8, 5, 6, NULL),
+	('Soulstring', 13, 1, 6, NULL),
+	('Plated Abomination Ribcage', 5, 5, 6, NULL),
+	('Shroud of Dominion', 4, 1, 6, NULL),
+	('Stormrage''s Talisman of Seething', 2, 1, 6, NULL),
+	('Nerubian Slavemaker', 13, 1, 6, NULL)
+
 	-- earthstrike
 
 CREATE TABLE ItemStats (
@@ -218,44 +258,42 @@ INSERT INTO ItemStats (ItemID, Strength, Agility, Stamina, Intellect, Spirit, At
 	(70, 5, 7, 5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0),
 	(71, 0, 0, 16, 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 0),
 	(72, 16, 30, 14, 0, 0, 0, 0, 0, 170, 0, 0, 0, 0, 0),
-	(73, 0, 0, 23, 10, 0, 62, 2, 0, 427, 0, 0, 0, 0, 0)
+	(73, 0, 0, 23, 10, 0, 62, 2, 0, 427, 0, 0, 0, 0, 0),
+	(74, 21, 0, 24, 0, 0, 0, 1, 1, 598, 0, 0, 0, 0, 0),
+	(75, 17, 0, 18, 0, 0, 0, 1, 0, 552, 0, 0, 0, 0, 0),
+	(76, 21, 0, 23, 0, 0, 0, 1, 0, 706, 0, 0, 0, 0, 0),
+	(77, 17, 0, 17, 0, 0, 0, 0, 0, 429, 0, 0, 0, 0, 0),
+	(78, 12, 0, 17, 0, 0, 0, 2, 0, 618, 0, 0, 0, 0, 0),
+	(79, 10, 9, 23, 0, 0, 0, 0, 0, 472, 0, 0, 0, 0, 0),
+	(80, 20, 0, 28, 0, 0, 0, 2, 1, 743, 0, 0, 0, 0, 0),
+	(81, 18, 12, 24, 0, 0, 0, 0, 1, 592, 0, 0, 0, 0, 0),
+	(82, 8, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+	(83, 22, 22, 11, 0, 0, 0, 0, 0, 138, 0, 0, 0, 0, 0),
+	(84, 25, 0, 10, 0, 0, 0, 1, 0, 391, 0, 0, 0, 0, 0),
+	(85, 18, 12, 12, 0, 0, 0, 0, 1, 519, 0, 0, 0, 0, 0),
+	(86, 0, 0, 8, 0, 0, 20, 1, 0, 0, 0, 0, 0, 0, 0),
+	(87, 0, 14, 8, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0),
+	(88, 11, 25, 7, 0, 0, 0, 0, 0, 151, 0, 0, 0, 0, 0),
+	(89, 0, 0, 6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+	(90, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0),
+	(91, 5, 0, 13, 0, 0, 0, 0, 1, 77, 0, 0, 0, 10, 0),
+	(92, 0, 0, 9, 0, 0, 30, 0, 1, 0, 0, 0, 0, 0, 0),
+	(93, 6, 14, 0, 0, 0, 0, 0, 0, 38, 0, 0, 0, 0, 0),
+	(94, 15, 15, 15, 0, 0, 0, 1, 0, 320, 0, 0, 0, 0, 0),
+	(95, 0, 0, 7, 0, 0, 16, 1, 0, 0, 0, 0, 0, 0, 0),
+	(96, 0, 0, 23, 9, 9, 44, 2, 0, 392, 10, 0, 0, 0, 0),
+	(97, 0, 0, 22, 0, 0, 44, 0, 2, 286, 0, 0, 0, 0, 0),
+	(98, 0, 19, 11, 6, 0, 0, 0, 1, 198, 0, 0, 0, 0, 0),
+	(99, 21, 17, 23, 0, 0, 0, 0, 0, 604, 0, 0, 0, 0, 0),
+	(100, 26, 19, 17, 0, 0, 0, 0, 0, 476, 0, 0, 0, 0, 0),
+	(101, 24, 0, 10, 0, 0, 0, 0, 0, 407, 0, 0, 0, 0, 0),
+	(102, 0, 0, 23, 0, 0, 30, 0, 1, 63, 0, 0, 0, 0, 0),
+	(103, 42, 0, 18, 0, 0, 0, 2, 0, 815, 0, 0, 0, 0, 0),
+	(104, 0, 0, 0, 0, 0, 52, 1, 1, 0, 0, 0, 0, 0, 0),
+	(105, 21, 20, 21, 0, 0, 0, 1, 1, 536, 0, 0, 0, 0, 0),
+	(106, 0, 0, 6, 0, 0, 16, 1, 0, 0, 0, 0, 0, 0, 0),
+	(107, 45, 0, 25, 0, 0, 0, 1, 1, 953, 0, 0, 0, 0, 0),
+	(108, 0, 0, 11, 0, 0, 50, 1, 0, 68, 0, 0, 0, 0, 0),
+	(109, 0, 0, 12, 0, 0, 26, 2, 0, 0, 0, 0, 0, 0, 0),
+	(110, 0, 0, 0, 0, 0, 24, 1, 0, 0, 0, 0, 0, 0, 0)
 	--(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-
-CREATE TABLE Users (
-	ID INT IDENTITY(1,1) PRIMARY KEY,
-	Username VARCHAR(255) NOT NULL
-);
-
-INSERT INTO Users (Username) VALUES
-	('Chris')
-
-CREATE TABLE UserSets (
-	ID INT IDENTITY(1,1) PRIMARY KEY,
-	UserID INT FOREIGN KEY REFERENCES Users(ID),
-	ItemID INT FOREIGN KEY REFERENCES Items(ID)
-);
-
-INSERT INTO UserSets (UserID, ItemID) VALUES
-	(1, 1),
-	(1, 2),
-	(1, 3),
-	(1, 4),
-	(1, 5),
-	(1, 6),
-	(1, 7),
-	(1, 8),
-	(1, 9),
-	(1, 10),
-	(1, 11),
-	(1, 12),
-	(1, 13),
-	(1, 14),
-	(1, 15),
-	(1, 16),
-	(1, 17),
-	(1, 18),
-	(1, 19),
-	(1, 20),
-	(1, 21),
-	(1, 22),
-	(1, 23)

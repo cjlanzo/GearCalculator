@@ -24,6 +24,7 @@ type CommandLineArgs =
         SetsMustContain      : string
 
         IncludeZgBuff        : bool
+        ExcludeStdStats      : bool
         HitThresholds        : string
         ArmorThresholds      : string
 
@@ -47,6 +48,7 @@ let setupParser () =
     parser.Setup(fun x -> x.EnableComparisonMode).As("enableComparisonMode").SetDefault(false)        |> ignore
     parser.Setup(fun x -> x.SetsMustContain)     .As("setsMustContain")     .SetDefault(String.Empty) |> ignore
     parser.Setup(fun x -> x.IncludeZgBuff)       .As("includeZgBuff")       .SetDefault(false)        |> ignore
+    parser.Setup(fun x -> x.ExcludeStdStats)     .As("excludeStdStats")     .SetDefault(false)        |> ignore
     parser.Setup(fun x -> x.HitThresholds)       .As("hitThresholds")       .SetDefault(String.Empty) |> ignore
     parser.Setup(fun x -> x.ArmorThresholds)     .As("armorThresholds")     .SetDefault(String.Empty) |> ignore
     parser.Setup(fun x -> x.StrengthWeight)      .As("strengthWeight")      .SetDefault(2.)           |> ignore
